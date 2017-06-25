@@ -2,10 +2,12 @@ defmodule UsAirportWeather.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :us_airport_weather,
-     version: "0.1.0",
-     elixir: "~> 1.4",
-     build_embedded: Mix.env == :prod,
+    [app:             :us_airport_weather,
+     version:         "0.1.0",
+     elixir:          "~> 1.4",
+     name:            "US Airport Weather observation",
+     source_url:      "https://github.com/albertoalmagro/us_airport_weather",
+     build_embedded:  Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps()]
   end
@@ -29,7 +31,9 @@ defmodule UsAirportWeather.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      httpoison: "~> 0.11.2"
+      httpoison: "~> 0.11.2",
+      ex_doc:    "~> 0.16.1",
+      earmark:   "~> 1.2"
     ]
   end
 end
