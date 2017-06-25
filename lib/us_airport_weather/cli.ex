@@ -1,12 +1,16 @@
 defmodule UsAirportWeather.CLI do
 
+  import UsAirportWeather.PrettyPrinter, only: [ pretty_print: 1 ]
+
   @moduledoc """
   Handle the command line parsing and the dispatch to the various functions that end
   up generating a weather report about a given airport in the US.
   """
 
   def main(argv) do
-    parse_args(argv)
+    argv
+    |> parse_args
+    |> process
   end
 
   @doc """
@@ -36,5 +40,27 @@ defmodule UsAirportWeather.CLI do
 
       _ -> :help
     end
+  end
+
+  def process(:help) do
+    IO.puts """
+    usage: us_airport_weather <identifier>
+    """
+    System.halt(0)
+  end
+  def process(identifier) do
+    UsAirportWeather.NOAA.fetch(identifier)
+    |> decode_response
+    |> pretty_print
+  end
+
+  def decode_response({ :ok, body }) do
+    { doc, _ } = body |> :binary.bin_to_list |> :xmerl_scan.string
+    doc
+  end
+  def decode_response({ :error, error }) do
+    { _, message } = List.keyfind(error, "message", 0)
+    IO.puts "Error fetching from NOAA: #{message}"
+    System.halt(2)
   end
 end
