@@ -22,6 +22,7 @@ use Mix.Config
 #
 
 config :us_airport_weather, noaa_url: "http://w1.weather.gov/xml/current_obs"
+config :logger, compile_time_purge_level: :info
 
 # It is also possible to import configuration files, relative to this
 # directory. For example, you can emulate configuration per environment
